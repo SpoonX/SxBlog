@@ -31,20 +31,3 @@ return array(
         ),
     ),
 );
-
-
-/**
- * @todo: Setup module to only work when there's an authenticated user (throw exception, should be prevented through acl anyway)
- * @todo: Create "ListPosts"
- * @todo: Create "ViewPost" (permalinks! (slug based))
- * @todo: Create "CreatePost"
- * @todo: Create "UpdatePost"
- * @todo: Cleanup. Add docblocks, submit PR and merge.
- *
- * ---------------------------
- *
- * @todo: Add pagination
- * @todo: Fix styling (bootstrap)
- * @todo: Add ACL rules to config
- *
- */
