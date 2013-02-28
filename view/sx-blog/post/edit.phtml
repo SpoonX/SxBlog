@@ -1,0 +1,20 @@
+<?php
+
+if (null !== $this->message) {
+    echo $this->message;
+}
+
+$form     = $this->form;
+$post     = $form->get('post');
+
+$form->prepare();
+
+
+echo $this->form()->openTag($form);
+echo $this->formRow($post->get('title'));
+echo $this->formRow($post->get('slug'));
+echo $this->formRow($post->get('categories'));
+echo $this->formRow($post->get('body'));
+echo $this->formElement($form->get('csrf'));
+echo $this->formRow($form->get('submit'));
+echo $this->form()->closeTag();
