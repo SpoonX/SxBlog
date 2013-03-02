@@ -19,11 +19,11 @@ class Post extends Fieldset implements InputFilterProviderInterface
         $this->add(array(
             'name'       => 'title',
             'options'    => array(
-                'label' => 'Title'
+                'label' => 'Title',
             ),
             'attributes' => array(
-                'required' => 'required'
-            )
+                'required' => 'required',
+            ),
         ));
 
         $this->add(array(
@@ -34,8 +34,7 @@ class Post extends Fieldset implements InputFilterProviderInterface
                 'target_class'   => 'SxBlog\Entity\Category',
                 'property'       => 'name',
             ),
-        )
-        );
+        ));
 
         $this->add(array(
             'name'       => 'slug',
@@ -43,19 +42,19 @@ class Post extends Fieldset implements InputFilterProviderInterface
                 'label' => 'Slug',
             ),
             'attributes' => array(
-                'required' => 'required'
-            )
+                'required' => 'required',
+            ),
         ));
 
         $this->add(array(
             'name'       => 'body',
             'type'  => 'Zend\Form\Element\Textarea',
             'options'    => array(
-                'label' => 'Body'
+                'label' => 'Body',
             ),
             'attributes' => array(
-                'required' => 'required'
-            )
+                'required' => 'required',
+            ),
         ));
     }
 

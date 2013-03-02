@@ -54,13 +54,6 @@ class PostsCategories
         return $this->id;
     }
 
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function getCategory()
     {
         return $this->category;

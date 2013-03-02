@@ -91,8 +91,6 @@ class PostController extends AbstractActionController
             $message = $this->messages['post_update_fail'];
         }
 
-
-
         return new ViewModel(array(
             'form'    => $form,
             'message' => $message,

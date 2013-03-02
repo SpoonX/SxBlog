@@ -103,9 +103,9 @@ class Post
      * @param \DateTime $creationDate
      * @return Post
      */
-    public function setCreationDate($creationDate)
+    public function setCreationDate(DateTime $creationDate)
     {
-        $this->creationDate = $creationDate;
+        $this->creationDate = clone $creationDate;
 
         return $this;
     }
