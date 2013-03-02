@@ -93,7 +93,7 @@ class Category
      */
     public function getCreationDate()
     {
-        return $this->creationDate;
+        return clone $this->creationDate;
     }
 
     /**
