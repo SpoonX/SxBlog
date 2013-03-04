@@ -5,7 +5,6 @@ namespace SxBlog\Entity;
 use \DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use ZfcUserDoctrineORM\Entity\User as UserEntity;
 
 /**
@@ -66,7 +65,16 @@ class Post
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="SxBlog\Entity\PostsCategories", mappedBy="post")
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="posts")
+     * @ORM\JoinTable(
+     *  name="post_category",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     *  }
+     * )
      */
     protected $categories;
 
@@ -176,77 +184,43 @@ class Post
         return $this->slug;
     }
 
-    /**
-     * Add categories
-     *
-     * @param \SxBlog\Entity\Category $categories
-     * @return Post
-     */
-    public function addCategories(Collection $categories)
-    {
-        foreach ($categories as $category) {
-            $this->addCategory($category);
-        }
 
-        return $this;
-    }
+
+
+
+
 
     /**
-     * Remove categories
-     *
-     * @param \SxBlog\Entity\Category $categories
+     * @param \SxBlog\Entity\Category $category
      */
-    public function removeCategories($categories)
-    {
-        foreach ($categories as $category) {
-            $this->removeCategory($category);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Add categories
-     *
-     * @param \SxBlog\Entity\Category $categories
-     * @return Post
-     */
-    public function addCategory(Category $category)
+    public function addCategorie(Category $category)
     {
         if ($this->categories->contains($category)) {
             return;
         }
 
         $this->categories->add($category);
-
-        return $this;
+        $category->addPost($this);
     }
 
     /**
-     * Remove categories
-     *
-     * @param \SxBlog\Entity\Category $categories
+     * @param \SxBlog\Entity\Category $category
      */
-    public function removeCategory(Category $category)
+    public function removeCategorie(Category $category)
     {
         if (!$this->categories->contains($category)) {
             return;
         }
 
         $this->categories->removeElement($category);
+        $category->removePost($this);
     }
 
-    /**
-     * @param   \Doctrine\Common\Collections\Collection     $categories
-     *
-     * @return  \SxBlog\Entity\Post
-     */
-    public function setCategories(Collection $categories)
-    {
-        $this->categories = $categories;
 
-        return $this;
-    }
+
+
+
+
 
     /**
      * Get categories

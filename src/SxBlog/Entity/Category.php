@@ -54,6 +54,13 @@ class Category
      */
     protected $slug;
 
+     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Post", mappedBy="categories")
+     */
+    protected $posts;
+
     /**
      * Constructor
      */
@@ -127,6 +134,32 @@ class Category
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function addPost(Post $post)
+    {
+        if ($this->posts->contains($post)) {
+            return;
+        }
+
+        $this->posts->add($post);
+        $post->addCategorie($this);
+    }
+
+    /**
+     * @param User $user
+     */
+    public function removePost(Post $post)
+    {
+        if (!$this->posts->contains($post)) {
+            return;
+        }
+
+        $this->posts->removeElement($post);
+        $post->removeCategorie($this);
     }
 
 }

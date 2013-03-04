@@ -61,7 +61,7 @@ class PostController extends AbstractActionController
     public function editAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('SxBlog/posts');
+            return $this->redirect()->toRoute('sx_blog/posts');
         }
 
         $slug           = $this->params('slug');
@@ -84,7 +84,7 @@ class PostController extends AbstractActionController
                 $flashMessenger->addMessage($this->messages['post_update_success']);
 
                 return $this->redirect()->toUrl($this->url()->fromRoute(
-                    'SxBlog/post/edit', array('slug' => $postEntity->getSlug())
+                    'sx_blog/post/edit', array('slug' => $postEntity->getSlug())
                 ));
             }
 
@@ -100,7 +100,7 @@ class PostController extends AbstractActionController
     public function newAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('SxBlog/posts');
+            return $this->redirect()->toRoute('sx_blog/posts');
         }
         $postEntity     = new PostEntity;
         $form           = new CreatePostForm($this->getServiceLocator());
@@ -119,7 +119,7 @@ class PostController extends AbstractActionController
                 $this->postService->createPost($postEntity);
                 $this->flashMessenger()->setNamespace('sxblog_post')->addMessage($this->messages['post_creation_success']);
 
-                return $this->redirect()->toUrl($this->url()->fromRoute('SxBlog/post/edit', array('slug' => $postEntity->getSlug())));
+                return $this->redirect()->toUrl($this->url()->fromRoute('sx_blog/post/edit', array('slug' => $postEntity->getSlug())));
             }
 
             $message = $this->messages['post_creation_fail'];
