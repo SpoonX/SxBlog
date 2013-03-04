@@ -2,8 +2,8 @@
 
 namespace SxBlog\Controller;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use SxBlog\Entity\Category as CategoryEntity;
@@ -15,7 +15,7 @@ class CategoryController extends AbstractActionController
 {
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $entityManager;
 
@@ -44,7 +44,7 @@ class CategoryController extends AbstractActionController
      * @param   \SxBlog\Repository\Category\Repository  $repository
      * @param   \SxBlog\Service\CategoryService         $categoryService
      */
-    public function __construct(EntityManager $entityManager, EntityRepository $repository, CategoryService $categoryService)
+    public function __construct(ObjectManager $entityManager, ObjectRepository $repository, CategoryService $categoryService)
     {
         $this->entityManager   = $entityManager;
         $this->repository      = $repository;
@@ -61,7 +61,7 @@ class CategoryController extends AbstractActionController
     public function newAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('SxBlog/categories');
+            return $this->redirect()->toRoute('sx_blog/categories');
         }
         $categoryEntity = new CategoryEntity;
         $form           = new CreateCategoryForm($this->getServiceLocator());
@@ -77,10 +77,10 @@ class CategoryController extends AbstractActionController
                 $this->categoryService->createCategory($categoryEntity);
                 $this->flashMessenger()->setNamespace('sxblog_category')->addMessage($this->messages['category_creation_success']);
 
-                return $this->redirect()->toUrl($this->url()->fromRoute('SxBlog/categories'));
-            } else {
-                $message = $this->messages['category_creation_fail'];
+                return $this->redirect()->toUrl($this->url()->fromRoute('sx_blog/categories'));
             }
+
+            $message = $this->messages['category_creation_fail'];
         }
 
         return new ViewModel(array(
@@ -92,7 +92,7 @@ class CategoryController extends AbstractActionController
     public function editAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('SxBlog/categories');
+            return $this->redirect()->toRoute('sx_blog/categories');
         }
 
         $slug           = $this->params('slug');
@@ -112,7 +112,7 @@ class CategoryController extends AbstractActionController
                 $flashMessenger->addMessage($this->messages['category_update_success']);
 
                 return $this->redirect()->toUrl($this->url()->fromRoute(
-                    'SxBlog/category/edit', array('slug' => $categoryEntity->getSlug())
+                    'sx_blog/category/edit', array('slug' => $categoryEntity->getSlug())
                 ));
             }
 
@@ -141,7 +141,7 @@ class CategoryController extends AbstractActionController
     public function deleteAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('SxBlog/categories');
+            return $this->redirect()->toRoute('sx_blog/categories');
         }
     }
 

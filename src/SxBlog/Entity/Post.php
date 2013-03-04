@@ -66,7 +66,7 @@ class Post
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="SxBlog\Entity\Category")
+     * @ORM\OneToMany(targetEntity="SxBlog\Entity\PostsCategories", mappedBy="post")
      */
     protected $categories;
 
@@ -95,19 +95,6 @@ class Post
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set creationDate
-     *
-     * @param \DateTime $creationDate
-     * @return Post
-     */
-    public function setCreationDate(DateTime $creationDate)
-    {
-        $this->creationDate = clone $creationDate;
-
-        return $this;
     }
 
     /**

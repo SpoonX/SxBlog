@@ -74,19 +74,6 @@ class Category
     }
 
     /**
-     * Set creationDate
-     *
-     * @param \DateTime $creationDate
-     * @return Category
-     */
-    public function setCreationDate(DateTime $creationDate)
-    {
-        $this->creationDate = clone $creationDate;
-
-        return $this;
-    }
-
-    /**
      * Get creationDate
      *
      * @return \DateTime

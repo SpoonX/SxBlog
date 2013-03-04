@@ -120,9 +120,9 @@ class PostController extends AbstractActionController
                 $this->flashMessenger()->setNamespace('sxblog_post')->addMessage($this->messages['post_creation_success']);
 
                 return $this->redirect()->toUrl($this->url()->fromRoute('SxBlog/post/edit', array('slug' => $postEntity->getSlug())));
-            } else {
-                $message = $this->messages['post_creation_fail'];
             }
+
+            $message = $this->messages['post_creation_fail'];
         }
 
         return new ViewModel(array(

@@ -3,7 +3,7 @@
 return array(
     'router' => array(
         'routes' => array(
-            'SxBlog' => array(
+            'sx_blog' => array(
                 'type'         => 'Literal',
                 'may_terminate' => true,
                 'options'      => array(
