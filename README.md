@@ -15,11 +15,13 @@ Installation
 
     or, adding it manually to your composer.json file and then running ./composer.phar install to install the dependencies
 
+    ```
     {
         "require": {
             "spoonx/sxblog": "dev-master"
         }
     }
+    ```
 
 2. Copy the database config
 
