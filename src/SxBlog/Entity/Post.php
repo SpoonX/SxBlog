@@ -5,6 +5,7 @@ namespace SxBlog\Entity;
 use \DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use ZfcUserDoctrineORM\Entity\User as UserEntity;
 
 /**
@@ -13,11 +14,11 @@ use ZfcUserDoctrineORM\Entity\User as UserEntity;
  * @ORM\Table(
  *      name                = "posts",
  *      uniqueConstraints   = {
- *          @ORM\UniqueConstraint(name="slug_idx", columns={"slug"})
+ * @ORM\UniqueConstraint(name="slug_idx", columns={"slug"})
  *      },
  *      indexes = {
- *          @ORM\Index(name="title_idx",        columns={"title"}),
- *          @ORM\Index(name="creationDate_idx", columns={"creationDate"}),
+ * @ORM\Index(name="title_idx",        columns={"title"}),
+ * @ORM\Index(name="creationDate_idx", columns={"creationDate"}),
  *      }
  * )
  * @ORM\Entity(repositoryClass="SxBlog\Repository\PostRepository")
@@ -69,10 +70,10 @@ class Post
      * @ORM\JoinTable(
      *  name="post_category",
      *  joinColumns={
-     *      @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      *  },
      *  inverseJoinColumns={
-     *      @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      *  }
      * )
      */
@@ -119,6 +120,7 @@ class Post
      * Set title
      *
      * @param string $title
+     *
      * @return Post
      */
     public function setTitle($title)
@@ -142,6 +144,7 @@ class Post
      * Set body
      *
      * @param string $body
+     *
      * @return Post
      */
     public function setBody($body)
@@ -165,6 +168,7 @@ class Post
      * Set slug
      *
      * @param string $slug
+     *
      * @return Post
      */
     public function setSlug($slug)
@@ -185,10 +189,37 @@ class Post
     }
 
 
+    /**
+     * Add categories
+     *
+     * @param \Doctrine\Common\Collections\Collection|\SxBlog\Entity\Category $categories
+     *
+     * @return Post
+     */
+    public function addCategories(Collection $categories)
+    {
+        foreach ($categories as $category) {
+            $this->addCategorie($category);
+        }
 
+        return $this;
+    }
 
+    /**
+     * Remove categories
+     *
+     * @param \Doctrine\Common\Collections\Collection|\SxBlog\Entity\Category $categories
+     *
+     * @return \SxBlog\Entity\Post
+     */
+    public function removeCategories(Collection $categories)
+    {
+        foreach ($categories as $category) {
+            $this->removeCategorie($category);
+        }
 
-
+        return $this;
+    }
 
     /**
      * @param \SxBlog\Entity\Category $category
@@ -216,12 +247,6 @@ class Post
         $category->removePost($this);
     }
 
-
-
-
-
-
-
     /**
      * Get categories
      *
@@ -236,6 +261,7 @@ class Post
      * Set author
      *
      * @param \ZfcUserDoctrineORM\Entity\User $author
+     *
      * @return Post
      */
     public function setAuthor(UserEntity $author = null)

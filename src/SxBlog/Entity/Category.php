@@ -54,7 +54,7 @@ class Category
      */
     protected $slug;
 
-     /**
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Post", mappedBy="categories")
@@ -94,6 +94,7 @@ class Category
      * Set name
      *
      * @param string $name
+     *
      * @return Category
      */
     public function setName($name)
@@ -117,6 +118,7 @@ class Category
      * Set slug
      *
      * @param string $slug
+     *
      * @return Category
      */
     public function setSlug($slug)
@@ -137,7 +139,15 @@ class Category
     }
 
     /**
-     * @param User $user
+     * @return \Doctrine\Common\Collections\ArrayCollection|\Doctrine\Common\Collections\Collection
+     */
+    public function getPosts()
+    {
+        return $this->posts;
+    }
+
+    /**
+     * @param Post $post
      */
     public function addPost(Post $post)
     {
@@ -150,7 +160,7 @@ class Category
     }
 
     /**
-     * @param User $user
+     * @param Post $post
      */
     public function removePost(Post $post)
     {

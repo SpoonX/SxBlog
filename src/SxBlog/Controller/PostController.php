@@ -2,25 +2,24 @@
 
 namespace SxBlog\Controller;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use SxBlog\Entity\Post as PostEntity;
-use SxBlog\Form\CreatePost as CreatePostForm;
 use SxBlog\Form\UpdatePost as UpdatePostForm;
 use SxBlog\Service\PostService;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 class PostController extends AbstractActionController
 {
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
-    protected $entityManager;
+    protected $objectManager;
 
     /**
-     * @var \SxBlog\Repository\Category\Repository
+     * @var \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository
      */
     protected $repository;
 
@@ -40,24 +39,26 @@ class PostController extends AbstractActionController
     );
 
     /**
-     * @param   \Doctrine\ORM\EntityManager             $entityManager
-     * @param   \SxBlog\Repository\Category\Repository  $repository
-     * @param   \SxBlog\Service\PostService             $postService
+     * @param \Doctrine\Common\Persistence\ObjectRepository $repository
+     * @param \SxBlog\Service\PostService                   $postService
      */
-    public function __construct(EntityManager $entityManager, EntityRepository $repository, PostService $postService)
+    public function __construct(ObjectRepository $repository, PostService $postService)
     {
-        $this->entityManager = $entityManager;
         $this->repository    = $repository;
         $this->postService   = $postService;
     }
 
-    public function indexAction()
+    /**
+     * @return \Zend\View\Model\ViewModel
+     */
+    public function listAction()
     {
-        return new ViewModel(array(
-            'message' => $this->getFlashMessengerMessage('sxblog_post'),
-        ));
+        return new ViewModel;
     }
 
+    /**
+     * @return \Zend\Http\Response|\Zend\View\Model\ViewModel
+     */
     public function editAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
@@ -66,7 +67,7 @@ class PostController extends AbstractActionController
 
         $slug           = $this->params('slug');
         $postEntity     = $this->repository->findBySlug($slug);
-        $form           = new UpdatePostForm($this->getServiceLocator());
+        $form           = $this->getServiceLocator()->get('FormElementManager')->get('SxBlog\Form\UpdatePost');
         $request        = $this->getRequest();
         $flashMessenger = $this->flashMessenger()->setNamespace('sxblog_post');
         $message        = $this->getFlashMessengerMessage('sxblog_post');
@@ -97,15 +98,18 @@ class PostController extends AbstractActionController
         ));
     }
 
+    /**
+     * @return \Zend\Http\Response|\Zend\View\Model\ViewModel
+     */
     public function newAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute('sx_blog/posts');
         }
-        $postEntity     = new PostEntity;
-        $form           = new CreatePostForm($this->getServiceLocator());
-        $request        = $this->getRequest();
-        $message        = null;
+        $postEntity = new PostEntity;
+        $form       = $this->getServiceLocator()->get('FormElementManager')->get('SxBlog\Form\CreatePost');
+        $request    = $this->getRequest();
+        $message    = null;
 
         $form->bind($postEntity);
 
@@ -132,6 +136,11 @@ class PostController extends AbstractActionController
 
     }
 
+    /**
+     * @param $namespace
+     *
+     * @return null|string
+     */
     protected function getFlashMessengerMessage($namespace)
     {
         $message        = null;
@@ -145,15 +154,17 @@ class PostController extends AbstractActionController
         return $message;
     }
 
-    public function deleteAction()
+    /**
+     * @return \Zend\View\Model\ViewModel
+     */
+    public function viewAction()
     {
-        if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('SxBlog/categories');
-        }
-    }
+        $slug = $this->params('slug');
+        $post = $this->repository->findBySlug($slug);
 
-    public function listAction()
-    {
+        return new ViewModel(array(
+            'post' => $post,
+        ));
     }
 
 }

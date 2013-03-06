@@ -6,6 +6,7 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
 use SxBlog\Service\CategoryService;
 use SxBlog\Entity\Category as CategoryEntity;
+use Doctrine\Common\Collections\Collection;
 
 class Categories extends AbstractHelper
 {
@@ -14,6 +15,11 @@ class Categories extends AbstractHelper
      * @var \SxBlog\Service\CategoryService
      */
     protected $categoryService;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection $categories
+     */
+    protected $categories;
 
     /**
      * @var array
@@ -38,11 +44,32 @@ class Categories extends AbstractHelper
     }
 
     /**
+     *
+     * @param \Doctrine\Common\Collections\Collection $categories
+     */
+    public function setCategories(Collection $categories)
+    {
+        $this->categories = $categories;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        if (null === $this->categories) {
+            $this->categories = $this->categoryService->getCategories();
+        }
+
+        return $this->categories;
+    }
+
+    /**
      * @return string
      */
     public function render()
     {
-        $categories      = $this->categoryService->getCategories();
+        $categories      = $this->getCategories();
         $categoryContent = '';
         $attributes      = $this->renderAttributes($this->options['category']['attributes']);
 
@@ -50,21 +77,21 @@ class Categories extends AbstractHelper
             $categoryContent .= $this->renderCategory($category, $attributes);
         }
 
-        $categoriesTemplate = new ViewModel;
+        $categoriesViewModel = new ViewModel;
 
-        $categoriesTemplate->setTemplate($this->options['categories']['template']);
-        
-        $categoriesTemplate->setVariables(array(
+        $categoriesViewModel->setTemplate($this->options['categories']['template']);
+
+        $categoriesViewModel->setVariables(array(
             'categories' => $categoryContent,
             'attributes' => $this->renderAttributes($this->options['categories']['attributes']),
         ));
 
-        return $this->view->render($categoriesTemplate);
+        return $this->getView()->render($categoriesViewModel);
     }
-    
+
     /**
      * @param   array $arguments
-     * 
+     *
      * @return  string
      */
     protected function renderAttributes(array $arguments)
@@ -72,13 +99,13 @@ class Categories extends AbstractHelper
         if (empty($arguments)) {
             return '';
         }
-        
+
         $argumentsString = '';
-        
+
         foreach ($arguments as $key => $value) {
             $argumentsString .= " {$key}=\"{$value}\"";
         }
-        
+
         return $argumentsString;
     }
 
@@ -92,7 +119,7 @@ class Categories extends AbstractHelper
 
     /**
      * @param   array $options
-     * 
+     *
      * @return  \SxBlog\View\Helper\Categories
      */
     public function setOptions(array $options)
@@ -103,32 +130,30 @@ class Categories extends AbstractHelper
     }
 
     /**
-     * 
-     * @param   \SxBlog\Entity\Category $category
-     * 
-     * @return  string
+     * @param \SxBlog\Entity\Category $categoryEntity
+     * @param string                  $attributes
+     *
+     * @return string
      */
     protected function renderCategory(CategoryEntity $categoryEntity, $attributes)
     {
-        $category = new ViewModel;
+        $categoryViewModel = new ViewModel;
 
-        $category->setTemplate($this->options['category']['template']);
+        $categoryViewModel->setTemplate($this->options['category']['template']);
 
-        $category->setVariables(array(
+        $categoryViewModel->setVariables(array(
             'category'   => $categoryEntity,
             'attributes' => $attributes,
         ));
 
-        return $this->view->render($category);
+        return $this->getView()->render($categoryViewModel);
     }
 
     /**
      * Invoke the view helper. Accepts options.
-     *  - ViewModel category_template
-     *  - ViewModel categories_template
-     * 
+     *
      * @param   array   $options
-     * 
+     *
      * @return \SxBlog\View\Helper\Categories
      */
     public function __invoke(array $options = array())

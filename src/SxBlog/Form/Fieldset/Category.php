@@ -5,16 +5,16 @@ namespace SxBlog\Form\Fieldset;
 use Zend\Form\Fieldset;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Zend\InputFilter\InputFilterProviderInterface;
-use Zend\ServiceManager\ServiceManager;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class Category extends Fieldset implements InputFilterProviderInterface
 {
 
-    public function __construct(ServiceManager $serviceManager)
+    public function __construct(ObjectManager $objectManager)
     {
         parent::__construct('category');
 
-        $this->setHydrator(new DoctrineHydrator($serviceManager->get('Doctrine\ORM\EntityManager'), 'SxBlog\Entity\Category'));
+        $this->setHydrator(new DoctrineHydrator($objectManager, 'SxBlog\Entity\Category'));
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Hidden',

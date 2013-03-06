@@ -4,19 +4,13 @@ namespace SxBlog\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element\Csrf;
-use Zend\ServiceManager\ServiceManager;
 
 class UpdatePost extends Form
 {
 
-    public function __construct(ServiceManager $serviceManager)
+    public function __construct()
     {
         parent::__construct('update-post-form');
-
-        $postFieldset = new Fieldset\Post($serviceManager);
-
-        $postFieldset->setUseAsBaseFieldset(true);
-        $this->add($postFieldset);
 
         $this->add(new Csrf('csrf'));
 

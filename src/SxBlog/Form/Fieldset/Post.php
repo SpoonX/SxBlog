@@ -4,17 +4,18 @@ namespace SxBlog\Form\Fieldset;
 
 use Zend\Form\Fieldset;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use Doctrine\Common\Persistence\ObjectManager;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\ServiceManager\ServiceManager;
 
 class Post extends Fieldset implements InputFilterProviderInterface
 {
 
-    public function __construct(ServiceManager $serviceManager)
+    public function __construct(ObjectManager $objectManager)
     {
         parent::__construct('post');
 
-        $this->setHydrator(new DoctrineHydrator($serviceManager->get('Doctrine\ORM\EntityManager'), 'SxBlog\Entity\Post'));
+        $this->setHydrator(new DoctrineHydrator($objectManager , 'SxBlog\Entity\Post'));
 
         $this->add(array(
             'name'       => 'title',
@@ -27,10 +28,10 @@ class Post extends Fieldset implements InputFilterProviderInterface
         ));
 
         $this->add(array(
-            'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
-            'name' => 'categories',
+            'type'    => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+            'name'    => 'categories',
             'options' => array(
-                'object_manager' => $serviceManager->get('Doctrine\ORM\EntityManager'),
+                'object_manager' => $objectManager,
                 'target_class'   => 'SxBlog\Entity\Category',
                 'property'       => 'name',
             ),
@@ -48,7 +49,7 @@ class Post extends Fieldset implements InputFilterProviderInterface
 
         $this->add(array(
             'name'       => 'body',
-            'type'  => 'Zend\Form\Element\Textarea',
+            'type'       => 'Zend\Form\Element\Textarea',
             'options'    => array(
                 'label' => 'Body',
             ),
@@ -67,10 +68,10 @@ class Post extends Fieldset implements InputFilterProviderInterface
             'title' => array(
                 'required' => true,
             ),
-            'slug' => array(
+            'slug'  => array(
                 'required' => true,
             ),
-            'body' => array(
+            'body'  => array(
                 'required' => true,
             ),
         );

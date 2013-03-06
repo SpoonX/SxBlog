@@ -47,7 +47,7 @@ return array(
                                     'route'    => '/view/:slug',
                                     'defaults' => array(
                                         'controller' => 'SxBlog\Controller\Post',
-                                        'action'     => 'list',
+                                        'action'     => 'view',
                                     ),
                                 ),
                             ),
@@ -69,7 +69,7 @@ return array(
                             'route'    => '/posts',
                             'defaults' => array(
                                 'controller' => 'SxBlog\Controller\Post',
-                                'action'     => 'index',
+                                'action'     => 'list',
                             ),
                         ),
                     ),

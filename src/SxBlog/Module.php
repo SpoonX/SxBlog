@@ -6,9 +6,14 @@ use Zend\ModuleManager\Feature\ControllerProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\FormElementProviderInterface;
 
 class Module implements
-ServiceProviderInterface, ViewHelperProviderInterface, ConfigProviderInterface, ControllerProviderInterface
+    ServiceProviderInterface,
+    ViewHelperProviderInterface,
+    ConfigProviderInterface,
+    ControllerProviderInterface,
+    FormElementProviderInterface
 {
 
     /**
@@ -55,6 +60,14 @@ ServiceProviderInterface, ViewHelperProviderInterface, ConfigProviderInterface, 
     /**
      * {@InheritDoc}
      */
+    public function getFormElementConfig()
+    {
+        return include __DIR__ . '/../../config/form-elements.config.php';
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function getAutoloaderConfig()
     {
         return array(
@@ -65,5 +78,4 @@ ServiceProviderInterface, ViewHelperProviderInterface, ConfigProviderInterface, 
             ),
         );
     }
-
 }

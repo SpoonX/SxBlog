@@ -2,45 +2,55 @@
 
 namespace SxBlog\Service;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use SxBlog\Entity\Category as CategoryEntity;
 
 class CategoryService
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $entityManager;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected $objectManager;
+
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectRepository
      */
     protected $repository;
 
     /**
-     * @param   \Doctrine\ORM\EntityManager     $entityManager
-     * @param   \Doctrine\ORM\EntityRepository  $repository
+     * @param \Doctrine\Common\Persistence\ObjectManager    $objectManager
+     * @param \Doctrine\Common\Persistence\ObjectRepository $repository
      */
-    public function __construct(EntityManager $entityManager, EntityRepository $repository)
+    public function __construct(ObjectManager $objectManager, ObjectRepository $repository)
     {
-        $this->entityManager    = $entityManager;
-        $this->repository       = $repository;
+        $this->objectManager = $objectManager;
+        $this->repository    = $repository;
     }
 
+    /**
+     * @return array
+     */
     public function getCategories()
     {
         return $this->repository->findAll();
     }
 
+    /**
+     * @param \SxBlog\Entity\Category $categoryEntity
+     */
     public function saveCategory(CategoryEntity $categoryEntity)
     {
-        $this->entityManager->flush($categoryEntity);
+        $this->objectManager->flush($categoryEntity);
     }
 
+    /**
+     * @param \SxBlog\Entity\Category $categoryEntity
+     */
     public function createCategory(CategoryEntity $categoryEntity)
     {
-        $this->entityManager->persist($categoryEntity);
-        $this->entityManager->flush($categoryEntity);
+        $this->objectManager->persist($categoryEntity);
+        $this->objectManager->flush($categoryEntity);
     }
 }

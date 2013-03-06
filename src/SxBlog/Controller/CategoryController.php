@@ -2,7 +2,6 @@
 
 namespace SxBlog\Controller;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -15,12 +14,7 @@ class CategoryController extends AbstractActionController
 {
 
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var \SxBlog\Repository\Category\Repository
+     * @var \Doctrine\Common\Persistence\ObjectRepository
      */
     protected $repository;
 
@@ -40,17 +34,18 @@ class CategoryController extends AbstractActionController
     );
 
     /**
-     * @param   \Doctrine\ORM\EntityManager             $entityManager
-     * @param   \SxBlog\Repository\Category\Repository  $repository
-     * @param   \SxBlog\Service\CategoryService         $categoryService
+     * @param   \Doctrine\Common\Persistence\ObjectRepository                          $repository
+     * @param   \SxBlog\Service\CategoryService                                        $categoryService
      */
-    public function __construct(ObjectManager $entityManager, ObjectRepository $repository, CategoryService $categoryService)
+    public function __construct(ObjectRepository $repository, CategoryService $categoryService)
     {
-        $this->entityManager   = $entityManager;
         $this->repository      = $repository;
         $this->categoryService = $categoryService;
     }
 
+    /**
+     * @return \Zend\View\Model\ViewModel
+     */
     public function indexAction()
     {
         return new ViewModel(array(
@@ -58,13 +53,16 @@ class CategoryController extends AbstractActionController
         ));
     }
 
+    /**
+     * @return \Zend\Http\Response|\Zend\View\Model\ViewModel
+     */
     public function newAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute('sx_blog/categories');
         }
         $categoryEntity = new CategoryEntity;
-        $form           = new CreateCategoryForm($this->getServiceLocator());
+        $form           = $this->getServiceLocator()->get('FormElementManager')->get('SxBlog\Form\CreateCategory');
         $request        = $this->getRequest();
         $message        = null;
 
@@ -89,6 +87,9 @@ class CategoryController extends AbstractActionController
         ));
     }
 
+    /**
+     * @return \Zend\Http\Response|\Zend\View\Model\ViewModel
+     */
     public function editAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
@@ -97,7 +98,7 @@ class CategoryController extends AbstractActionController
 
         $slug           = $this->params('slug');
         $categoryEntity = $this->repository->findBySlug($slug);
-        $form           = new UpdateCategoryForm($this->getServiceLocator());
+        $form           = $this->getServiceLocator()->get('FormElementManager')->get('SxBlog\Form\UpdateCategory');
         $request        = $this->getRequest();
         $flashMessenger = $this->flashMessenger()->setNamespace('sxblog_category');
         $message        = $this->getFlashMessengerMessage('sxblog_category');
@@ -125,6 +126,11 @@ class CategoryController extends AbstractActionController
         ));
     }
 
+    /**
+     * @param $namespace
+     *
+     * @return null
+     */
     protected function getFlashMessengerMessage($namespace)
     {
         $message        = null;
@@ -138,23 +144,17 @@ class CategoryController extends AbstractActionController
         return $message;
     }
 
-    public function deleteAction()
-    {
-        if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('sx_blog/categories');
-        }
-    }
-
+    /**
+     * @return \Zend\View\Model\ViewModel
+     */
     public function listAction()
     {
-        $slug = $this->params('slug');
+        $slug     = $this->params('slug');
+        $category = $this->repository->findBySlug($slug);
 
-        $posts = $this->repository->findBySlug($slug);
-
-        foreach($posts as $post) {
-            var_dump($post->getTitle());
-        }
-        //findByCategory
+        return new ViewModel(array(
+            'posts' => $category->getPosts(),
+        ));
     }
 
 }
