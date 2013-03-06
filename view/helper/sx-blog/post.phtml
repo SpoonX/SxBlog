@@ -1,0 +1,36 @@
+<article<?php echo $this->attributes; ?> role="main">
+    <header role="heading">
+        <h1>
+            <a href="<?php echo $this->url('sx_blog/post/view', array(
+                'slug' => $this->post->getSlug(),
+            )); ?>">
+                <?php echo $this->post->getTitle(); ?>
+            </a>
+        </h1>
+    </header>
+    <p>
+        <?php echo $this->post->getBody(); ?>
+    </p>
+    <footer>
+        <time>
+            <?php echo $this->post->getCreationDate()->format('l jS \of F Y h:i:s A'); ?>
+        </time>
+        <nav role="navigation">
+            Posted in
+
+            <?php
+                $categories = '';
+
+                foreach($this->post->getCategories() as $category) {
+                $url        = $this->url('sx_blog/category/view', array(
+                    'slug' => $category->getSlug(),
+                ));
+
+                $categories .= '<a href="'.$url.'">'.$category->getName().'</a>, ';
+            }
+
+            echo substr($categories, 0, -2);
+            ?>
+        </nav>
+    </footer>
+</article>
