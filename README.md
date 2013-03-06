@@ -9,7 +9,7 @@ Installation
     ... Adding it through the command line,
 
     ```
-    ./composer.phar require spoonx/sxblog`
+    ./composer.phar require spoonx/sxblog
     When asked for a version, type: "dev-master"
     ```
 
