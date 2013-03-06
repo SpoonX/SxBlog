@@ -1,9 +1,11 @@
 <?php
 
+use SxBlog\Form;
+
 return array(
     'factories' => array(
         'SxBlog\Form\CreatePost' => function ($sm) {
-            $createPostForm = new \SxBlog\Form\CreatePost();
+            $createPostForm = new Form\CreatePost();
             $postFieldset   = $sm->get('SxBlog\Form\Fieldset\Post');
 
             $postFieldset->setUseAsBaseFieldset(true);
@@ -12,7 +14,7 @@ return array(
             return $createPostForm;
         },
         'SxBlog\Form\UpdatePost' => function ($sm) {
-            $updatePostForm = new \SxBlog\Form\UpdatePost();
+            $updatePostForm = new Form\UpdatePost();
             $postFieldset   = $sm->get('SxBlog\Form\Fieldset\Post');
 
             $postFieldset->setUseAsBaseFieldset(true);
@@ -21,10 +23,10 @@ return array(
             return $updatePostForm;
         },
         'SxBlog\Form\Fieldset\Post' => function ($sm) {
-            return new \SxBlog\Form\Fieldset\Post($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+            return new Form\Fieldset\Post($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
         },
         'SxBlog\Form\CreateCategory' => function ($sm) {
-            $createCategoryForm = new \SxBlog\Form\CreateCategory();
+            $createCategoryForm = new Form\CreateCategory();
             $CategoryFieldset   = $sm->get('SxBlog\Form\Fieldset\Category');
 
             $CategoryFieldset->setUseAsBaseFieldset(true);
@@ -33,7 +35,7 @@ return array(
             return $createCategoryForm;
         },
         'SxBlog\Form\UpdateCategory' => function ($sm) {
-            $updateCategoryForm = new \SxBlog\Form\UpdateCategory();
+            $updateCategoryForm = new Form\UpdateCategory();
             $CategoryFieldset   = $sm->get('SxBlog\Form\Fieldset\Category');
 
             $CategoryFieldset->setUseAsBaseFieldset(true);
@@ -42,7 +44,7 @@ return array(
             return $updateCategoryForm;
         },
         'SxBlog\Form\Fieldset\Category' => function ($sm) {
-            return new \SxBlog\Form\Fieldset\Category($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+            return new Form\Fieldset\Category($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
         },
     ),
 );

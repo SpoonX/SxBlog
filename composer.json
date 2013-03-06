@@ -1,0 +1,18 @@
+{
+    "name": "spoonx/sxblog",
+    "description": "Blog Module for ZF2",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "blog",
+        "module"
+    ],
+    "homepage": "http://www.spoonx.nl/",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*",
+        "doctrine/doctrine-orm-module": "0.*",
+        "zf-commons/zfc-user": "0.*",
+        "zf-commons/zfc-user-doctrine-orm": "0.*"
+    }
+}

@@ -84,9 +84,9 @@ class PostController extends AbstractActionController
                 $this->postService->savePost($postEntity);
                 $flashMessenger->addMessage($this->messages['post_update_success']);
 
-                return $this->redirect()->toUrl($this->url()->fromRoute(
+                return $this->redirect()->toRoute(
                     'sx_blog/post/edit', array('slug' => $postEntity->getSlug())
-                ));
+                );
             }
 
             $message = $this->messages['post_update_fail'];
@@ -123,7 +123,7 @@ class PostController extends AbstractActionController
                 $this->postService->createPost($postEntity);
                 $this->flashMessenger()->setNamespace('sxblog_post')->addMessage($this->messages['post_creation_success']);
 
-                return $this->redirect()->toUrl($this->url()->fromRoute('sx_blog/post/edit', array('slug' => $postEntity->getSlug())));
+                return $this->redirect()->toRoute('sx_blog/post/edit', array('slug' => $postEntity->getSlug()));
             }
 
             $message = $this->messages['post_creation_fail'];

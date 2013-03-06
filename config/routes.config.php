@@ -16,13 +16,12 @@ return array(
                 'child_routes' => array(
                     'post'   => array(
                         'type'          => 'Literal',
-                        'may_terminate' => true,
                         'options'       => array(
                             'route' => '/post',
                         ),
                         'child_routes'  => array(
                             'new' => array(
-                                'type'    => 'Segment',
+                                'type'    => 'Literal',
                                 'options' => array(
                                     'route'    => '/new',
                                     'defaults' => array(
@@ -85,13 +84,12 @@ return array(
                     ),
                     'category'   => array(
                         'type'          => 'Literal',
-                        'may_terminate' => true,
                         'options'       => array(
                             'route' => '/category',
                         ),
                         'child_routes'  => array(
                             'new' => array(
-                                'type'    => 'Segment',
+                                'type'    => 'Literal',
                                 'options' => array(
                                     'route'    => '/new',
                                     'defaults' => array(

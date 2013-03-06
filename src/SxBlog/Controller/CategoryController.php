@@ -75,7 +75,7 @@ class CategoryController extends AbstractActionController
                 $this->categoryService->createCategory($categoryEntity);
                 $this->flashMessenger()->setNamespace('sxblog_category')->addMessage($this->messages['category_creation_success']);
 
-                return $this->redirect()->toUrl($this->url()->fromRoute('sx_blog/categories'));
+                return $this->redirect()->toRoute('sx_blog/categories');
             }
 
             $message = $this->messages['category_creation_fail'];
@@ -112,9 +112,9 @@ class CategoryController extends AbstractActionController
                 $this->categoryService->saveCategory($categoryEntity);
                 $flashMessenger->addMessage($this->messages['category_update_success']);
 
-                return $this->redirect()->toUrl($this->url()->fromRoute(
+                return $this->redirect()->toRoute(
                     'sx_blog/category/edit', array('slug' => $categoryEntity->getSlug())
-                ));
+                );
             }
 
             $message = $this->messages['category_update_fail'];
