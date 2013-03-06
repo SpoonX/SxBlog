@@ -5,7 +5,6 @@ namespace SxBlog\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use SxBlog\Entity\Post as PostEntity;
-use SxBlog\Form\UpdatePost as UpdatePostForm;
 use SxBlog\Service\PostService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;

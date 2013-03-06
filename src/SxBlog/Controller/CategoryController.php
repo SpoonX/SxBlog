@@ -6,8 +6,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use SxBlog\Entity\Category as CategoryEntity;
-use SxBlog\Form\UpdateCategory as UpdateCategoryForm;
-use SxBlog\Form\CreateCategory as CreateCategoryForm;
 use SxBlog\Service\CategoryService;
 
 class CategoryController extends AbstractActionController
