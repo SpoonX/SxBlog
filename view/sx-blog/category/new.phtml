@@ -1,0 +1,17 @@
+<?php
+if (null !== $this->message) {
+    echo $this->message;
+}
+
+$form     = $this->form;
+$category = $form->get('category');
+
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formRow($category->get('name'));
+echo $this->formRow($category->get('slug'));
+echo $this->formElement($form->get('csrf'));
+echo $this->formRow($category->get('id'));
+echo $this->formRow($form->get('submit'));
+echo $this->form()->closeTag();
