@@ -14,5 +14,10 @@
         "doctrine/doctrine-orm-module": "0.*",
         "zf-commons/zfc-user": "0.*",
         "zf-commons/zfc-user-doctrine-orm": "0.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "SxBlog": "src/"
+        }
     }
 }
