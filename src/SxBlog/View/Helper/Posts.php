@@ -21,11 +21,19 @@ class Posts extends AbstractHelper
     protected $posts;
 
     /**
+     * @var integer
+     */
+    protected $page = 1;
+
+    /**
      * @var array
      */
     protected $options = array(
         'template'   => 'helper/sx-blog/posts',
         'attributes' => array(),
+        'pagination' => array(
+            'posts_per_page' => 10,
+        ),
     );
 
     /**
@@ -55,20 +63,41 @@ class Posts extends AbstractHelper
     public function getPosts()
     {
         if (null === $this->posts) {
-            $this->posts = $this->postService->getPosts();
+            $this->posts = $this->postService->getPosts($this->page, $this->options['pagination']['posts_per_page']);
         }
 
         return $this->posts;
     }
 
     /**
+     * @param $page
+     *
+     * @return Posts
+     */
+    public function setPage($page)
+    {
+        $this->page = (int)$page;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+
+    /**
      * @return string
      */
     public function render()
     {
-        $posts          = $this->getPosts();
-        $postContent    = '';
-        $postRenderer   = $this->getView()->plugin('sxblog_post');
+        $posts        = $this->getPosts();
+        $postContent  = '';
+        $postRenderer = $this->getView()->plugin('sxblog_post');
 
         foreach ($posts as $post) {
             $postContent .= $postRenderer->setPost($post)->render();

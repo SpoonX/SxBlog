@@ -18,6 +18,7 @@ return array(
             'helper/sx-blog/categories' => __DIR__ . '/../view/helper/sx-blog/categories.phtml',
             'helper/sx-blog/post'       => __DIR__ . '/../view/helper/sx-blog/post.phtml',
             'helper/sx-blog/posts'      => __DIR__ . '/../view/helper/sx-blog/posts.phtml',
+            'helper/sx-blog/pagination' => __DIR__ . '/../view/helper/sx-blog/pagination.phtml',
         ),
     ),
     'view_helpers' => array(

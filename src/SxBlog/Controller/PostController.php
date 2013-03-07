@@ -52,7 +52,11 @@ class PostController extends AbstractActionController
      */
     public function listAction()
     {
-        return new ViewModel;
+        return new ViewModel(
+            array(
+                'page'  => $this->params('page', 1),
+            )
+        );
     }
 
     /**

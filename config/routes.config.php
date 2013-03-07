@@ -4,23 +4,23 @@ return array(
     'router' => array(
         'routes' => array(
             'sx_blog' => array(
-                'type'         => 'Literal',
+                'type'          => 'Literal',
                 'may_terminate' => true,
-                'options'      => array(
+                'options'       => array(
                     'route'    => '/blog',
                     'defaults' => array(
                         'controller' => 'SxBlog\Controller\Blog',
                         'action'     => 'index',
                     ),
                 ),
-                'child_routes' => array(
-                    'post'   => array(
-                        'type'          => 'Literal',
-                        'options'       => array(
+                'child_routes'  => array(
+                    'post'       => array(
+                        'type'         => 'Literal',
+                        'options'      => array(
                             'route' => '/post',
                         ),
-                        'child_routes'  => array(
-                            'new' => array(
+                        'child_routes' => array(
+                            'new'    => array(
                                 'type'    => 'Literal',
                                 'options' => array(
                                     'route'    => '/new',
@@ -30,7 +30,7 @@ return array(
                                     ),
                                 ),
                             ),
-                            'edit' => array(
+                            'edit'   => array(
                                 'type'    => 'Segment',
                                 'options' => array(
                                     'route'    => '/edit/:slug',
@@ -50,7 +50,7 @@ return array(
                                     ),
                                 ),
                             ),
-                            'delete'   => array(
+                            'delete' => array(
                                 'type'    => 'Segment',
                                 'options' => array(
                                     'route'    => '/delete/:slug',
@@ -62,10 +62,11 @@ return array(
                             ),
                         ),
                     ),
-                    'posts' => array(
-                        'type'    => 'Literal',
-                        'options' => array(
-                            'route'    => '/posts',
+                    'posts'      => array(
+                        'type'          => 'Segment',
+                        'may_terminate' => true,
+                        'options'       => array(
+                            'route'    => '/posts[/:page]',
                             'defaults' => array(
                                 'controller' => 'SxBlog\Controller\Post',
                                 'action'     => 'list',
@@ -83,12 +84,12 @@ return array(
                         ),
                     ),
                     'category'   => array(
-                        'type'          => 'Literal',
-                        'options'       => array(
+                        'type'         => 'Literal',
+                        'options'      => array(
                             'route' => '/category',
                         ),
-                        'child_routes'  => array(
-                            'new' => array(
+                        'child_routes' => array(
+                            'new'    => array(
                                 'type'    => 'Literal',
                                 'options' => array(
                                     'route'    => '/new',
@@ -98,7 +99,7 @@ return array(
                                     ),
                                 ),
                             ),
-                            'edit' => array(
+                            'edit'   => array(
                                 'type'    => 'Segment',
                                 'options' => array(
                                     'route'    => '/edit/:slug',
@@ -118,7 +119,7 @@ return array(
                                     ),
                                 ),
                             ),
-                            'delete'   => array(
+                            'delete' => array(
                                 'type'    => 'Segment',
                                 'options' => array(
                                     'route'    => '/delete/:slug',
