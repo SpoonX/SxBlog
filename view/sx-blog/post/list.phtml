@@ -1,1 +1,13 @@
-<?php echo $this->sxblogPosts(); ?>
+<?php
+
+echo $this->sxblogPosts()->setPage($this->page);
+
+echo $this->paginationControl(
+    $this->sxblogPosts()->getPosts(),
+    'Sliding',
+    'helper/sx-blog/pagination',
+    array(
+        'route' => 'sx_blog/posts'
+    )
+);
+?>

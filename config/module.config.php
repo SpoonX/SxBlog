@@ -15,9 +15,9 @@ return array(
             'helper/sx-blog/categories' => __DIR__ . '/../view/helper/sx-blog/categories.phtml',
             'sx-blog/post/new'          => __DIR__ . '/../view/sx-blog/post/new.phtml',
             'helper/sx-blog/category'   => __DIR__ . '/../view/helper/sx-blog/category.phtml',
-            'helper/sx-blog/categories' => __DIR__ . '/../view/helper/sx-blog/categories.phtml',
             'helper/sx-blog/post'       => __DIR__ . '/../view/helper/sx-blog/post.phtml',
             'helper/sx-blog/posts'      => __DIR__ . '/../view/helper/sx-blog/posts.phtml',
+            'helper/sx-blog/pagination' => __DIR__ . '/../view/helper/sx-blog/pagination.phtml',
         ),
     ),
     'view_helpers' => array(
