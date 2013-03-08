@@ -54,7 +54,7 @@ class PostController extends AbstractActionController
     {
         return new ViewModel(
             array(
-                'page'  => $this->params('page', 1),
+                'page' => $this->params('page', 1),
             )
         );
     }
@@ -124,7 +124,9 @@ class PostController extends AbstractActionController
 
                 $postEntity->setAuthor($user);
                 $this->postService->createPost($postEntity);
-                $this->flashMessenger()->setNamespace('sxblog_post')->addMessage($this->messages['post_creation_success']);
+                $this->flashMessenger()->setNamespace('sxblog_post')->addMessage(
+                    $this->messages['post_creation_success']
+                );
 
                 return $this->redirect()->toRoute('sx_blog/post/edit', array('slug' => $postEntity->getSlug()));
             }

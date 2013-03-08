@@ -51,7 +51,7 @@ class PostRepository extends EntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('p');
 
-        $queryBuilder->join('p.categories', 'c', 'WITH', 'c = :category')->setParameter('category', $category);
+        $queryBuilder->join('p.categories', 'c')->where('c = :category')->setParameter('category', $category);
 
         $ORMPaginator     = new ORMPaginator($queryBuilder->getQuery(), false);
         $paginatorAdapter = new DoctrinePaginator($ORMPaginator);

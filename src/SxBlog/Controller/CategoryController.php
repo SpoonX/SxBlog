@@ -41,8 +41,11 @@ class CategoryController extends AbstractActionController
      * @param \SxBlog\Service\CategoryService               $categoryService
      * @param \Doctrine\Common\Persistence\ObjectRepository $postRepository
      */
-    public function __construct(ObjectRepository $categoryRepository, CategoryService $categoryService, ObjectRepository $postRepository)
-    {
+    public function __construct(
+        ObjectRepository $categoryRepository,
+        CategoryService $categoryService,
+        ObjectRepository $postRepository
+    ) {
         $this->categoryRepository = $categoryRepository;
         $this->postRepository     = $postRepository;
         $this->categoryService    = $categoryService;
@@ -78,7 +81,9 @@ class CategoryController extends AbstractActionController
 
             if ($form->isValid()) {
                 $this->categoryService->createCategory($categoryEntity);
-                $this->flashMessenger()->setNamespace('sxblog_category')->addMessage($this->messages['category_creation_success']);
+                $this->flashMessenger()->setNamespace('sxblog_category')->addMessage(
+                    $this->messages['category_creation_success']
+                );
 
                 return $this->redirect()->toRoute('sx_blog/categories');
             }
