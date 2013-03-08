@@ -6,6 +6,7 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
 use SxBlog\Service\PostService;
 use Doctrine\Common\Collections\Collection;
+use \Traversable;
 
 class Posts extends AbstractHelper
 {
@@ -16,7 +17,7 @@ class Posts extends AbstractHelper
     protected $postService;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection $posts
+     * @var \Traversable
      */
     protected $posts;
 
@@ -45,12 +46,11 @@ class Posts extends AbstractHelper
     }
 
     /**
+     * @param \Traversable $posts
      *
-     * @param \Doctrine\Common\Collections\Collection $posts
-     *
-     * @return  \SxBlog\View\Helper\Posts
+     * @return Posts
      */
-    public function setPosts(Collection $posts)
+    public function setPosts(Traversable $posts)
     {
         $this->posts = $posts;
 

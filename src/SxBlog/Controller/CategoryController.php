@@ -14,7 +14,12 @@ class CategoryController extends AbstractActionController
     /**
      * @var \Doctrine\Common\Persistence\ObjectRepository
      */
-    protected $repository;
+    protected $categoryRepository;
+
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectRepository
+     */
+    protected $postRepository;
 
     /**
      * @var \SxBlog\Service\CategoryService
@@ -32,13 +37,15 @@ class CategoryController extends AbstractActionController
     );
 
     /**
-     * @param   \Doctrine\Common\Persistence\ObjectRepository                          $repository
-     * @param   \SxBlog\Service\CategoryService                                        $categoryService
+     * @param \Doctrine\Common\Persistence\ObjectRepository $categoryRepository
+     * @param \SxBlog\Service\CategoryService               $categoryService
+     * @param \Doctrine\Common\Persistence\ObjectRepository $postRepository
      */
-    public function __construct(ObjectRepository $repository, CategoryService $categoryService)
+    public function __construct(ObjectRepository $categoryRepository, CategoryService $categoryService, ObjectRepository $postRepository)
     {
-        $this->repository      = $repository;
-        $this->categoryService = $categoryService;
+        $this->categoryRepository = $categoryRepository;
+        $this->postRepository     = $postRepository;
+        $this->categoryService    = $categoryService;
     }
 
     /**
@@ -95,7 +102,7 @@ class CategoryController extends AbstractActionController
         }
 
         $slug           = $this->params('slug');
-        $categoryEntity = $this->repository->findBySlug($slug);
+        $categoryEntity = $this->categoryRepository->findBySlug($slug);
         $form           = $this->getServiceLocator()->get('FormElementManager')->get('SxBlog\Form\UpdateCategory');
         $request        = $this->getRequest();
         $flashMessenger = $this->flashMessenger()->setNamespace('sxblog_category');
@@ -148,10 +155,12 @@ class CategoryController extends AbstractActionController
     public function listAction()
     {
         $slug     = $this->params('slug');
-        $category = $this->repository->findBySlug($slug);
+        $page     = $this->params('page');
+        $category = $this->categoryRepository->findBySlug($slug);
 
         return new ViewModel(array(
-            'posts' => $category->getPosts(),
+            'category' => $category,
+            'posts'    => $this->postRepository->findByCategoryPaginated($category, $page),
         ));
     }
 

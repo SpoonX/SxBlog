@@ -112,7 +112,7 @@ return array(
                             'view'   => array(
                                 'type'    => 'Segment',
                                 'options' => array(
-                                    'route'    => '/view/:slug',
+                                    'route'    => '/view/:slug[/:page]',
                                     'defaults' => array(
                                         'controller' => 'SxBlog\Controller\Category',
                                         'action'     => 'list',
