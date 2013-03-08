@@ -1,0 +1,37 @@
+<?php
+if (empty($this->params)) {
+    $this->params = array();
+}
+
+if ($this->pageCount): ?>
+<div class="paginationControl">
+    <!-- Previous page link -->
+    <?php if (isset($this->previous)): ?>
+    <a href="<?php echo $this->url($this->route, array_merge(array('page' => $this->previous), $this->params)); ?>">
+        < Previous
+    </a> |
+    <?php else: ?>
+    <span class="disabled">< Previous</span> |
+    <?php endif; ?>
+
+    <!-- Numbered page links -->
+    <?php foreach ($this->pagesInRange as $page): ?>
+    <?php if ($page != $this->current): ?>
+        <a href="<?php echo $this->url($this->route,  array_merge(array('page' => $page), $this->params)); ?>">
+            <?php echo $page; ?>
+        </a> |
+        <?php else: ?>
+        <?php echo $page; ?> |
+        <?php endif; ?>
+    <?php endforeach; ?>
+
+    <!-- Next page link -->
+    <?php if (isset($this->next)): ?>
+    <a href="<?php echo $this->url($this->route,  array_merge(array('page' => $this->next), $this->params)); ?>">
+        Next >
+    </a>
+    <?php else: ?>
+    <span class="disabled">Next ></span>
+    <?php endif; ?>
+</div>
+<?php endif; ?>

@@ -6,6 +6,7 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
 use SxBlog\Service\PostService;
 use Doctrine\Common\Collections\Collection;
+use \Traversable;
 
 class Posts extends AbstractHelper
 {
@@ -16,9 +17,14 @@ class Posts extends AbstractHelper
     protected $postService;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection $posts
+     * @var \Traversable
      */
     protected $posts;
+
+    /**
+     * @var integer
+     */
+    protected $page = 1;
 
     /**
      * @var array
@@ -26,6 +32,9 @@ class Posts extends AbstractHelper
     protected $options = array(
         'template'   => 'helper/sx-blog/posts',
         'attributes' => array(),
+        'pagination' => array(
+            'posts_per_page' => 10,
+        ),
     );
 
     /**
@@ -37,12 +46,11 @@ class Posts extends AbstractHelper
     }
 
     /**
+     * @param \Traversable $posts
      *
-     * @param \Doctrine\Common\Collections\Collection $posts
-     *
-     * @return  \SxBlog\View\Helper\Posts
+     * @return Posts
      */
-    public function setPosts(Collection $posts)
+    public function setPosts(Traversable $posts)
     {
         $this->posts = $posts;
 
@@ -55,20 +63,41 @@ class Posts extends AbstractHelper
     public function getPosts()
     {
         if (null === $this->posts) {
-            $this->posts = $this->postService->getPosts();
+            $this->posts = $this->postService->getPosts($this->page, $this->options['pagination']['posts_per_page']);
         }
 
         return $this->posts;
     }
 
     /**
+     * @param $page
+     *
+     * @return Posts
+     */
+    public function setPage($page)
+    {
+        $this->page = (int)$page;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+
+    /**
      * @return string
      */
     public function render()
     {
-        $posts          = $this->getPosts();
-        $postContent    = '';
-        $postRenderer   = $this->getView()->plugin('sxblog_post');
+        $posts        = $this->getPosts();
+        $postContent  = '';
+        $postRenderer = $this->getView()->plugin('sxblog_post');
 
         foreach ($posts as $post) {
             $postContent .= $postRenderer->setPost($post)->render();

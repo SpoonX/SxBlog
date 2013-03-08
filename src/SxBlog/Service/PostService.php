@@ -15,7 +15,7 @@ class PostService
     protected $objectManager;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var \Doctrine\Common\Persistence\ObjectRepository|\SxBlog\Repository\PostRepository
      */
     protected $repository;
 
@@ -30,11 +30,14 @@ class PostService
     }
 
     /**
-     * @return array
+     * @param integer $page
+     * @param integer $limit
+     *
+     * @return mixed
      */
-    public function getPosts()
+    public function getPosts($page = 1, $limit = 10)
     {
-        return $this->repository->findAll();
+        return $this->repository->findAllPaginated($page, $limit);
     }
 
     /**

@@ -9,7 +9,8 @@ return array(
 
             return new SxBlog\Controller\CategoryController(
                 $entityManager->getRepository('SxBlog\Entity\Category'),
-                $categoryService
+                $categoryService,
+                $entityManager->getRepository('SxBlog\Entity\Post')
             );
         },
         'SxBlog\Controller\Post' => function($sm) {
