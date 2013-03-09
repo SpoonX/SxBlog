@@ -5,13 +5,8 @@ return array(
         'routes' => array(
             'sx_blog' => array(
                 'type'          => 'Literal',
-                'may_terminate' => true,
                 'options'       => array(
                     'route'    => '/blog',
-                    'defaults' => array(
-                        'controller' => 'SxBlog\Controller\Blog',
-                        'action'     => 'index',
-                    ),
                 ),
                 'child_routes'  => array(
                     'post'       => array(
