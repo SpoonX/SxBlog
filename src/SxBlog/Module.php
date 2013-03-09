@@ -25,6 +25,7 @@ class Module implements
         $configFiles = array(
             'module.config.php',
             'routes.config.php',
+            'navigation.config.php',
         );
         foreach ($configFiles as $configFile) {
             $config = \Zend\Stdlib\ArrayUtils::merge($config, include __DIR__ . '/../../config/' . $configFile);
