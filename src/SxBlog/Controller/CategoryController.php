@@ -34,6 +34,7 @@ class CategoryController extends AbstractActionController
         'category_creation_fail'    => 'Creating the category failed!',
         'category_update_success'   => 'Category updated successfully!',
         'category_update_fail'      => 'Updating the category failed!',
+        'category_deletion_success' => 'Category deleted successfully!',
     );
 
     /**
@@ -152,6 +153,23 @@ class CategoryController extends AbstractActionController
         }
 
         return $message;
+    }
+
+    /**
+     * @return \Zend\Http\Response
+     */
+    public function deleteAction()
+    {
+        $slug = $this->params('slug');
+
+        $this->categoryService->delete($slug);
+
+        $this->flashMessenger()->setNamespace('sxblog_category')->addMessage(
+            $this->messages['category_deletion_success']
+        );
+
+        // @todo: Make configurable.
+        return $this->redirect()->toRoute('sx_blog/categories');
     }
 
     /**
