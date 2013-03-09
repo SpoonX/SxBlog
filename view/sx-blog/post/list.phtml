@@ -1,5 +1,9 @@
 <?php
 
+if (null !== $this->message) {
+    echo $this->message;
+}
+
 echo $this->sxblogPosts()->setPage($this->page);
 
 echo $this->paginationControl(
