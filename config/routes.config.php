@@ -4,11 +4,21 @@ return array(
     'router' => array(
         'routes' => array(
             'sx_blog' => array(
-                'type'          => 'Literal',
-                'options'       => array(
-                    'route'    => '/blog',
+                'type'         => 'Literal',
+                'options'      => array(
+                    'route' => '/blog',
                 ),
-                'child_routes'  => array(
+                'child_routes' => array(
+                    'posts'      => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/posts[/:page]',
+                            'defaults' => array(
+                                'controller' => 'SxBlog\Controller\Post',
+                                'action'     => 'list',
+                            ),
+                        ),
+                    ),
                     'post'       => array(
                         'type'         => 'Literal',
                         'options'      => array(
@@ -54,17 +64,6 @@ return array(
                                         'action'     => 'delete',
                                     ),
                                 ),
-                            ),
-                        ),
-                    ),
-                    'posts'      => array(
-                        'type'          => 'Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/posts[/:page]',
-                            'defaults' => array(
-                                'controller' => 'SxBlog\Controller\Post',
-                                'action'     => 'list',
                             ),
                         ),
                     ),
