@@ -10,8 +10,8 @@ return array(
                 ),
                 'child_routes' => array(
                     'posts'      => array(
-                        'type'          => 'Segment',
-                        'options'       => array(
+                        'type'    => 'Segment',
+                        'options' => array(
                             'route'    => '/posts[/:page]',
                             'defaults' => array(
                                 'controller' => 'SxBlog\Controller\Post',
