@@ -30,11 +30,20 @@ class CategoryService
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function getCategories()
     {
         return $this->repository->findAll();
+    }
+
+    /**
+     * @param $slug
+     */
+    public function delete($slug)
+    {
+        $this->objectManager->remove($this->repository->findBySlug($slug));
+        $this->objectManager->flush();
     }
 
     /**

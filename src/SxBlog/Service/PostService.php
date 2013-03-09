@@ -41,6 +41,15 @@ class PostService
     }
 
     /**
+     * @param $slug
+     */
+    public function delete($slug)
+    {
+        $this->objectManager->remove($this->repository->findBySlug($slug));
+        $this->objectManager->flush();
+    }
+
+    /**
      * @param \SxBlog\Entity\Post $postEntity
      */
     public function savePost(PostEntity $postEntity)

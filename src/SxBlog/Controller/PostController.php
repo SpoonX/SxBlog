@@ -35,6 +35,7 @@ class PostController extends AbstractActionController
         'post_creation_fail'    => 'Creating the post failed!',
         'post_update_success'   => 'Post updated successfully!',
         'post_update_fail'      => 'Updating the post failed!',
+        'post_deletion_success' => 'Post deleted successfully!',
     );
 
     /**
@@ -43,8 +44,8 @@ class PostController extends AbstractActionController
      */
     public function __construct(ObjectRepository $repository, PostService $postService)
     {
-        $this->repository    = $repository;
-        $this->postService   = $postService;
+        $this->repository  = $repository;
+        $this->postService = $postService;
     }
 
     /**
@@ -54,7 +55,8 @@ class PostController extends AbstractActionController
     {
         return new ViewModel(
             array(
-                'page' => $this->params('page', 1),
+                'page'    => $this->params('page', 1),
+                'message' => $this->getFlashMessengerMessage('sxblog_post'),
             )
         );
     }
@@ -142,6 +144,36 @@ class PostController extends AbstractActionController
     }
 
     /**
+     * @return \Zend\View\Model\ViewModel
+     */
+    public function viewAction()
+    {
+        $slug = $this->params('slug');
+        $post = $this->repository->findBySlug($slug);
+
+        return new ViewModel(array(
+            'post' => $post,
+        ));
+    }
+
+    /**
+     * @return \Zend\Http\Response
+     */
+    public function deleteAction()
+    {
+        $slug = $this->params('slug');
+
+        $this->postService->delete($slug);
+
+        $this->flashMessenger()->setNamespace('sxblog_post')->addMessage(
+            $this->messages['post_deletion_success']
+        );
+
+        // @todo: Make configurable.
+        return $this->redirect()->toRoute('sx_blog/posts');
+    }
+
+    /**
      * @param $namespace
      *
      * @return null|string
@@ -157,19 +189,6 @@ class PostController extends AbstractActionController
         }
 
         return $message;
-    }
-
-    /**
-     * @return \Zend\View\Model\ViewModel
-     */
-    public function viewAction()
-    {
-        $slug = $this->params('slug');
-        $post = $this->repository->findBySlug($slug);
-
-        return new ViewModel(array(
-            'post' => $post,
-        ));
     }
 
 }
