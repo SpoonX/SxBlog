@@ -9,7 +9,7 @@
     ],
     "homepage": "http://www.spoonx.nl/",
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.6",
         "zendframework/zendframework": "2.*",
         "doctrine/doctrine-orm-module": "0.*",
         "zf-commons/zfc-user": "0.*",

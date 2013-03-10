@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use ZfcUserDoctrineORM\Entity\User as UserEntity;
+use SxBlog\Html\ExcerptExtractor;
 
 /**
  * Post
@@ -55,6 +56,13 @@ class Post
      * @ORM\Column(type="text")
      */
     protected $body;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $excerpt;
 
     /**
      * @var string
@@ -149,7 +157,7 @@ class Post
      */
     public function setBody($body)
     {
-        $this->body = $body;
+        $this->body = (string)$body;
 
         return $this;
     }
@@ -165,6 +173,38 @@ class Post
     }
 
     /**
+     * @param string $excerpt
+     */
+    public function setExcerpt($excerpt)
+    {
+        $this->excerpt = $excerpt;
+    }
+
+    /**
+     * @param bool $force
+     *
+     * @return mixed|null|string
+     */
+    public function getExcerpt($force = false)
+    {
+
+        if ($force && empty($this->excerpt)) {
+
+            $body = $this->getBody();
+
+            if (empty($body)) {
+                return null;
+            }
+
+            $extractor = new ExcerptExtractor($body);
+
+            return $extractor->getExcerpt(350);
+        }
+
+        return $this->excerpt;
+    }
+
+    /**
      * Set slug
      *
      * @param string $slug
@@ -173,7 +213,7 @@ class Post
      */
     public function setSlug($slug)
     {
-        $this->slug = $slug;
+        $this->slug = (string)$slug;
 
         return $this;
     }
