@@ -48,6 +48,14 @@ class Post extends Fieldset implements InputFilterProviderInterface
         ));
 
         $this->add(array(
+            'name'       => 'excerpt',
+            'type'       => 'Zend\Form\Element\Textarea',
+            'options'    => array(
+                'label' => 'Excerpt',
+            ),
+        ));
+
+        $this->add(array(
             'name'       => 'body',
             'type'       => 'Zend\Form\Element\Textarea',
             'options'    => array(
