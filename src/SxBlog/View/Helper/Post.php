@@ -18,8 +18,9 @@ class Post extends AbstractHelper
      * @var array
      */
     protected $options = array(
-        'template'   => 'helper/sx-blog/post',
-        'attributes' => array(),
+        'use_excerpt' => false,
+        'template'    => 'helper/sx-blog/post',
+        'attributes'  => array(),
     );
 
     /**
@@ -52,8 +53,9 @@ class Post extends AbstractHelper
         $postViewModel->setTemplate($this->options['template']);
 
         $postViewModel->setVariables(array(
-            'post'       => $this->getPost(),
-            'attributes' => $this->renderAttributes($this->options['attributes']),
+            'useExcerpt' => $this->options['use_excerpt'],
+            'post'        => $this->getPost(),
+            'attributes'  => $this->renderAttributes($this->options['attributes']),
         ));
 
         return $this->getView()->render($postViewModel);

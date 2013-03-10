@@ -99,6 +99,10 @@ class Posts extends AbstractHelper
         $postContent  = '';
         $postRenderer = $this->getView()->plugin('sxblog_post');
 
+        $postRenderer->setOptions(array(
+            'use_excerpt' => true,
+        ));
+
         foreach ($posts as $post) {
             $postContent .= $postRenderer->setPost($post)->render();
         }
