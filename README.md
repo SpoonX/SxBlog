@@ -57,6 +57,8 @@ Installation
 
     If you're running into problems, try making the cache dir writable by executing `chown -R :www-data data; sudo chmod -R 775 data` (`www-data` being your apache user.)
 
-Todo
---------
-* Write actual readme
+## Questions / support
+If you're having trouble with the module there are a couple of resources that might be of help.
+* [RWOverdijk at irc.freenode.net #zftalk.dev](http://webchat.freenode.net?channels=zftalk.dev%2Czftalk&uio=MTE9MTAz8d)
+* [Issue tracker](https://github.com/SpoonX/SxBlog/issues). (Please try to not submit unrelated issues).
+* By [mail](mailto:r.w.overdijk@gmail.com?Subject=SxBlog%20help)
