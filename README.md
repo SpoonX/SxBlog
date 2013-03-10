@@ -53,6 +53,10 @@ Installation
 
     `./vendor/bin/doctrine-module orm:schema-tool:update --force`
 
+5. Make sure cache dir is writable
+
+    If you're running into problems, try making the cache dir writable by executing `chown -R :www-data data; sudo chmod -R 775 data` (`www-data` being your apache user.)
+
 Todo
 --------
 * Write actual readme
