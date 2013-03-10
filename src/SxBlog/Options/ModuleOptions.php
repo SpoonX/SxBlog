@@ -48,6 +48,16 @@ class ModuleOptions extends AbstractOptions
     protected $postAttributes = array();
 
     /**
+     * @var array
+     */
+    protected $categoryAttributes = array();
+
+    /**
+     * @var array
+     */
+    protected $categoryContainerAttributes = array();
+
+    /**
      * @var string
      */
     protected $categoryTemplate = 'helper/sx-blog/category';
@@ -82,6 +92,39 @@ class ModuleOptions extends AbstractOptions
         'post_update_fail'          => 'Updating the post failed!',
         'post_deletion_success'     => 'Post deleted successfully!',
     );
+
+    /**
+     * @param array $categoryAttributes
+     */
+    public function setCategoryAttributes($categoryAttributes)
+    {
+        $this->categoryAttributes = $categoryAttributes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCategoryAttributes()
+    {
+        return $this->categoryAttributes;
+    }
+
+    /**
+     * @param array $categoryContainerAttributes
+     */
+    public function setCategoryContainerAttributes($categoryContainerAttributes)
+    {
+        $this->categoryContainerAttributes = $categoryContainerAttributes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCategoryContainerAttributes()
+    {
+        return $this->categoryContainerAttributes;
+    }
+
 
     /**
      * @param string $routeAfterCategoryDelete

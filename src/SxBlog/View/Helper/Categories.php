@@ -6,6 +6,7 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
 use SxBlog\Service\CategoryService;
 use SxBlog\Entity\Category as CategoryEntity;
+use SxBlog\Options\ModuleOptions;
 use Doctrine\Common\Collections\Collection;
 
 class Categories extends AbstractHelper
@@ -22,24 +23,17 @@ class Categories extends AbstractHelper
     protected $categories;
 
     /**
-     * @var array
+     * @var \SxBlog\Options\ModuleOptions
      */
-    protected $options = array(
-        'category'   => array(
-            'template'   => 'helper/sx-blog/category',
-            'attributes' => array(),
-        ),
-        'categories' => array(
-            'template'   => 'helper/sx-blog/categories',
-            'attributes' => array(),
-        ),
-    );
+    protected $options;
 
     /**
+     * @param ModuleOptions                   $options
      * @param \SxBlog\Service\CategoryService $categoryService
      */
-    public function __construct(CategoryService $categoryService)
+    public function __construct(ModuleOptions $options, CategoryService $categoryService)
     {
+        $this->options         = $options;
         $this->categoryService = $categoryService;
     }
 
@@ -71,7 +65,7 @@ class Categories extends AbstractHelper
     {
         $categories      = $this->getCategories();
         $categoryContent = '';
-        $attributes      = $this->renderAttributes($this->options['category']['attributes']);
+        $attributes      = $this->renderAttributes($this->options->getCategoryAttributes());
 
         foreach ($categories as $category) {
             $categoryContent .= $this->renderCategory($category, $attributes);
@@ -79,11 +73,11 @@ class Categories extends AbstractHelper
 
         $categoriesViewModel = new ViewModel;
 
-        $categoriesViewModel->setTemplate($this->options['categories']['template']);
+        $categoriesViewModel->setTemplate($this->options->getCategoriesContainerTemplate());
 
         $categoriesViewModel->setVariables(array(
             'categories' => $categoryContent,
-            'attributes' => $this->renderAttributes($this->options['categories']['attributes']),
+            'attributes' => $this->renderAttributes($this->options->getCategoryContainerAttributes()),
         ));
 
         return $this->getView()->render($categoriesViewModel);
@@ -118,18 +112,6 @@ class Categories extends AbstractHelper
     }
 
     /**
-     * @param   array $options
-     *
-     * @return  \SxBlog\View\Helper\Categories
-     */
-    public function setOptions(array $options)
-    {
-        $this->options = array_merge_recursive($this->options, $options);
-
-        return $this;
-    }
-
-    /**
      * @param \SxBlog\Entity\Category $categoryEntity
      * @param string                  $attributes
      *
@@ -139,7 +121,7 @@ class Categories extends AbstractHelper
     {
         $categoryViewModel = new ViewModel;
 
-        $categoryViewModel->setTemplate($this->options['category']['template']);
+        $categoryViewModel->setTemplate($this->options->getCategoryTemplate());
 
         $categoryViewModel->setVariables(array(
             'category'   => $categoryEntity,
@@ -152,13 +134,15 @@ class Categories extends AbstractHelper
     /**
      * Invoke the view helper. Accepts options.
      *
-     * @param   array   $options
+     * @param   array|\Traversable   $options
      *
      * @return \SxBlog\View\Helper\Categories
      */
     public function __invoke(array $options = array())
     {
-        $this->setOptions($options);
+        if (!empty($options)) {
+            $this->options->setFromArray($options);
+        }
 
         return $this;
     }

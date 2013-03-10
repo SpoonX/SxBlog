@@ -42,6 +42,16 @@ return array(
         //'category_template' => 'helper/sx-blog/category',
 
         /**
+         * The attributes to pass along to the category element
+         */
+        //'category_attributes' => array(),
+
+        /**
+         * The attributes to pass along to the categories container element.
+         */
+        //'category_container_attributes' => array(),
+
+        /**
          * The template to use to render the categories container.
          */
         //'categories_container_template' => 'helper/sx-blog/categories',
