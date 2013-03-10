@@ -181,6 +181,9 @@ class Post
     }
 
     /**
+     * Get the excerpt.
+     * To make sure you get an excerpt based on the body if no excerpt exists, pass true as the first argument.
+     *
      * @param bool $force
      *
      * @return mixed|null|string
