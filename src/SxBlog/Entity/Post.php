@@ -181,29 +181,10 @@ class Post
     }
 
     /**
-     * Get the excerpt.
-     * To make sure you get an excerpt based on the body if no excerpt exists, pass true as the first argument.
-     *
-     * @param bool $force
-     *
-     * @return mixed|null|string
+     * @return string
      */
-    public function getExcerpt($force = false)
+    public function getExcerpt()
     {
-
-        if ($force && empty($this->excerpt)) {
-
-            $body = $this->getBody();
-
-            if (empty($body)) {
-                return null;
-            }
-
-            $extractor = new ExcerptExtractor($body);
-
-            return $extractor->getExcerpt(350);
-        }
-
         return $this->excerpt;
     }
 

@@ -20,11 +20,6 @@ return array(
             'helper/sx-blog/pagination' => __DIR__ . '/../view/helper/sx-blog/pagination.phtml',
         ),
     ),
-    'view_helpers' => array(
-        'invokables' => array(
-            'sxblogPost' => 'SxBlog\View\Helper\Post',
-        ),
-    ),
     'doctrine'     => array(
         'driver' => array(
             strtolower(__NAMESPACE__) => array(

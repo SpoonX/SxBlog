@@ -5,6 +5,8 @@ namespace SxBlog\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use SxBlog\Entity\Post as PostEntity;
+use SxBlog\Exception;
+use SxBlog\Options\ModuleOptions;
 use SxBlog\Service\PostService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -28,24 +30,40 @@ class PostController extends AbstractActionController
     protected $postService;
 
     /**
-     * @var array
+     * @var \SxBlog\Options\ModuleOptions
      */
-    protected $messages = array(
-        'post_creation_success' => 'Post created successfully!',
-        'post_creation_fail'    => 'Creating the post failed!',
-        'post_update_success'   => 'Post updated successfully!',
-        'post_update_fail'      => 'Updating the post failed!',
-        'post_deletion_success' => 'Post deleted successfully!',
-    );
+    protected $options;
 
     /**
+     * @param \SxBlog\Options\ModuleOptions                 $options
      * @param \Doctrine\Common\Persistence\ObjectRepository $repository
      * @param \SxBlog\Service\PostService                   $postService
      */
-    public function __construct(ObjectRepository $repository, PostService $postService)
+    public function __construct(ModuleOptions $options, ObjectRepository $repository, PostService $postService)
     {
+        $this->options     = $options;
         $this->repository  = $repository;
         $this->postService = $postService;
+    }
+
+    /**
+     * @param $key
+     *
+     * @return mixed
+     * @throws \SxBlog\Exception\InvalidArgumentException
+     */
+    protected function getMessage($key)
+    {
+        $messages = $this->options->getMessages();
+
+        if (!isset($messages[$key])) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Invalid $key supplied for getMessage. Message with key "%s" not found.',
+                $key
+            ));
+        }
+
+        return $messages[$key];
     }
 
     /**
@@ -87,14 +105,14 @@ class PostController extends AbstractActionController
 
                 $postEntity->setAuthor($user);
                 $this->postService->savePost($postEntity);
-                $flashMessenger->addMessage($this->messages['post_update_success']);
+                $flashMessenger->addMessage($this->getMessage('post_update_success'));
 
                 return $this->redirect()->toRoute(
                     'sx_blog/post/edit', array('slug' => $postEntity->getSlug())
                 );
             }
 
-            $message = $this->messages['post_update_fail'];
+            $message = $this->getMessage('post_update_fail');
         }
 
         return new ViewModel(array(
@@ -127,13 +145,13 @@ class PostController extends AbstractActionController
                 $postEntity->setAuthor($user);
                 $this->postService->createPost($postEntity);
                 $this->flashMessenger()->setNamespace('sxblog_post')->addMessage(
-                    $this->messages['post_creation_success']
+                    $this->getMessage('post_creation_success')
                 );
 
                 return $this->redirect()->toRoute('sx_blog/post/edit', array('slug' => $postEntity->getSlug()));
             }
 
-            $message = $this->messages['post_creation_fail'];
+            $message = $this->getMessage('post_creation_fail');
         }
 
         return new ViewModel(array(
@@ -166,11 +184,10 @@ class PostController extends AbstractActionController
         $this->postService->delete($slug);
 
         $this->flashMessenger()->setNamespace('sxblog_post')->addMessage(
-            $this->messages['post_deletion_success']
+            $this->getMessage('post_deletion_success')
         );
 
-        // @todo: Make configurable.
-        return $this->redirect()->toRoute('sx_blog/posts');
+        return $this->redirect()->toRoute($this->options->getRouteAfterPostDelete());
     }
 
     /**
