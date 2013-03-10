@@ -9,7 +9,7 @@
         </h1>
     </header>
     <p>
-        <?php echo $this->useExcerpt ? $this->post->getExcerpt(true) : $this->post->getBody(); ?>
+        <?php echo $this->useExcerpt ? $this->excerpt: $this->post->getBody(); ?>
     </p>
     <footer>
         <time>

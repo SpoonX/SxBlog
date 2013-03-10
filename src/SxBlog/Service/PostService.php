@@ -5,6 +5,7 @@ namespace SxBlog\Service;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use SxBlog\Entity\Post as PostEntity;
+use SxBlog\Html\ExcerptExtractor;
 
 class PostService
 {
@@ -27,6 +28,25 @@ class PostService
     {
         $this->objectManager = $objectManager;
         $this->repository    = $repository;
+    }
+
+    public function getExcerpt(PostEntity $post, $length)
+    {
+        $excerpt = $post->getExcerpt();
+
+        if (!empty($excerpt)) {
+            return $excerpt;
+        }
+
+        $body = $post->getBody();
+
+        if (empty($body)) {
+            return null;
+        }
+
+        $extractor = new ExcerptExtractor($body);
+
+        return $extractor->getExcerpt($length);
     }
 
     /**
