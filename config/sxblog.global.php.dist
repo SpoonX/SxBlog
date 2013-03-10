@@ -47,7 +47,7 @@ return array(
         //'category_attributes' => array(),
 
         /**
-         * The attributes to pass along to the posts container element.
+         * The attributes to pass along to the categories container element.
          */
         //'category_container_attributes' => array(),
 
