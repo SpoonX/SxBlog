@@ -4,19 +4,33 @@ namespace SxBlog;
 
 use SxBlog\View\Helper\Categories as CategoriesHelper;
 use SxBlog\View\Helper\Posts as PostsHelper;
+use SxBlog\View\Helper\Post as PostHelper;
 
 return array(
     'factories' => array(
-        'sxblogCategories' => function($sm) {
-            return new CategoriesHelper($sm->getServiceLocator()->get('SxBlog\Service\CategoryService'));
+        'sxblogCategories' => function ($sm) {
+            $sl = $sm->getServiceLocator();
+
+            return new CategoriesHelper(
+                $sl->get('SxBlog\Options\ModuleOptions'),
+                $sl->get('SxBlog\Service\CategoryService')
+            );
         },
-        'sxblogPosts' => function($sm) {
-            return new PostsHelper($sm->getServiceLocator()->get('SxBlog\Service\PostService'));
+        'sxblogPosts'      => function ($sm) {
+            $sl = $sm->getServiceLocator();
+
+            return new PostsHelper(
+                $sl->get('SxBlog\Options\ModuleOptions'),
+                $sl->get('SxBlog\Service\PostService')
+            );
+        },
+        'sxblogPost'      => function ($sm) {
+            $sl = $sm->getServiceLocator();
+
+            return new PostHelper(
+                $sl->get('SxBlog\Options\ModuleOptions'),
+                $sl->get('SxBlog\Service\PostService')
+            );
         },
     ),
 );
-/**
- * @todo: Cleanup (All files, no debug code, set correct dependencies in json, set correct configs)
- * @todo: Push changes, request final review.
- * @todo: Remove this todo block, push, merge, find next issue from issues list.
- */

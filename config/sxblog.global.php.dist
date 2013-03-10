@@ -1,0 +1,77 @@
+<?php
+return array(
+    'sx_blog' => array(
+        /**
+         * Set this to true if you wish to display an excerpt in stead of the entire post on the posts overview page.
+         */
+        //'use_excerpt' => false,
+
+        /**
+         * When use_excerpt has been set to true, you can use this value to specify the length of the excerpt.
+         */
+        //'excerpt_length' => 350,
+
+        /**
+         * The template to use to render the posts container.
+         */
+        //'posts_container_template' => 'helper/sx-blog/posts',
+
+        /**
+         * The attributes to pass along to the posts container element.
+         */
+        //'posts_container_attributes' => array(),
+
+        /**
+         * The amount of posts to display per-page.
+         */
+        //'posts_per_page' => 5,
+
+        /**
+         * The template to use to render a post
+         */
+        //'post_template' => 'helper/sx-blog/post',
+
+        /**
+         * The attributes to pass along to the post element (will be applied to the <article> element.)
+         */
+        //'post_attributes' => array(),
+
+        /**
+         * The template to use to render a category
+         */
+        //'category_template' => 'helper/sx-blog/category',
+
+        /**
+         * The template to use to render the categories container.
+         */
+        //'categories_container_template' => 'helper/sx-blog/categories',
+
+        /**
+         * The route to be sent to after deleting a post.
+         */
+        //'route_after_post_delete' => 'sx_blog/posts',
+
+        /**
+         * The route to be sent to after deleting a category.
+         */
+        //'route_after_category_delete' => 'sx_blog/categories',
+
+        /**
+         * The messages used throughout the module.
+         */
+        /*
+         'messages' => array(
+            'category_creation_success' => 'Category created successfully!',
+            'category_creation_fail'    => 'Creating the category failed!',
+            'category_update_success'   => 'Category updated successfully!',
+            'category_update_fail'      => 'Updating the category failed!',
+            'category_deletion_success' => 'Category deleted successfully!',
+            'post_creation_success'     => 'Post created successfully!',
+            'post_creation_fail'        => 'Creating the post failed!',
+            'post_update_success'       => 'Post updated successfully!',
+            'post_update_fail'          => 'Updating the post failed!',
+            'post_deletion_success'     => 'Post deleted successfully!',
+        ),
+        */
+    ),
+);

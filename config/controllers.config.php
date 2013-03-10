@@ -8,6 +8,7 @@ return array(
             $entityManager   = $serviceLocator->get('Doctrine\ORM\EntityManager');
 
             return new SxBlog\Controller\CategoryController(
+                $serviceLocator->get('SxBlog\Options\ModuleOptions'),
                 $entityManager->getRepository('SxBlog\Entity\Category'),
                 $categoryService,
                 $entityManager->getRepository('SxBlog\Entity\Post')
@@ -19,6 +20,7 @@ return array(
             $entityManager   = $serviceLocator->get('Doctrine\ORM\EntityManager');
 
             return new SxBlog\Controller\PostController(
+                $serviceLocator->get('SxBlog\Options\ModuleOptions'),
                 $entityManager->getRepository('SxBlog\Entity\Post'),
                 $categoryService
             );

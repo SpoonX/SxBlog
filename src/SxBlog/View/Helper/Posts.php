@@ -5,6 +5,7 @@ namespace SxBlog\View\Helper;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
 use SxBlog\Service\PostService;
+use SxBlog\Options\ModuleOptions;
 use Doctrine\Common\Collections\Collection;
 use \Traversable;
 
@@ -27,21 +28,17 @@ class Posts extends AbstractHelper
     protected $page = 1;
 
     /**
-     * @var array
+     * @var \SxBlog\Options\ModuleOptions
      */
-    protected $options = array(
-        'template'   => 'helper/sx-blog/posts',
-        'attributes' => array(),
-        'pagination' => array(
-            'posts_per_page' => 10,
-        ),
-    );
+    protected $options;
 
     /**
-     * @param \SxBlog\Service\PostService $postService
+     * @param \SxBlog\Options\ModuleOptions $options
+     * @param \SxBlog\Service\PostService   $postService
      */
-    public function __construct(PostService $postService)
+    public function __construct(ModuleOptions $options, PostService $postService)
     {
+        $this->options     = $options;
         $this->postService = $postService;
     }
 
@@ -63,7 +60,7 @@ class Posts extends AbstractHelper
     public function getPosts()
     {
         if (null === $this->posts) {
-            $this->posts = $this->postService->getPosts($this->page, $this->options['pagination']['posts_per_page']);
+            $this->posts = $this->postService->getPosts($this->page, $this->options->getPostsPerPage());
         }
 
         return $this->posts;
@@ -98,22 +95,19 @@ class Posts extends AbstractHelper
         $posts        = $this->getPosts();
         $postContent  = '';
         $postRenderer = $this->getView()->plugin('sxblog_post');
-
-        $postRenderer->setOptions(array(
-            'use_excerpt' => true,
-        ));
+        $useExcerpt   = $this->options->getUseExcerpt();
 
         foreach ($posts as $post) {
-            $postContent .= $postRenderer->setPost($post)->render();
+            $postContent .= $postRenderer->setPost($post)->render($useExcerpt);
         }
 
         $postsviewModel = new ViewModel;
 
-        $postsviewModel->setTemplate($this->options['template']);
+        $postsviewModel->setTemplate($this->options->getPostsContainerTemplate());
 
         $postsviewModel->setVariables(array(
             'posts'      => $postContent,
-            'attributes' => $this->renderAttributes($this->options['attributes']),
+            'attributes' => $this->renderAttributes($this->options->getPostsContainerAttributes()),
         ));
 
         return $this->getView()->render($postsviewModel);
@@ -148,27 +142,17 @@ class Posts extends AbstractHelper
     }
 
     /**
-     * @param   array $options
-     *
-     * @return  \SxBlog\View\Helper\Posts
-     */
-    public function setOptions(array $options)
-    {
-        $this->options = array_merge_recursive($this->options, $options);
-
-        return $this;
-    }
-
-    /**
      * Invoke the view helper. Accepts options.
      *
-     * @param   array   $options
+     * @param   array|\Traversable   $options
      *
      * @return \SxBlog\View\Helper\Posts
      */
-    public function __invoke(array $options = array())
+    public function __invoke($options = array())
     {
-        $this->setOptions($options);
+        if (!empty($options)) {
+            $this->options->setFromArray($options);
+        }
 
         return $this;
     }

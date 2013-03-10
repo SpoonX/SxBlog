@@ -42,11 +42,12 @@ Installation
     );
     ```
 
-3. Copy the database config
+3. Copy the config files to your autoload dir
 
     `cp vendor/spoonx/sxblog/config/database.local.php.dist config/autoload/database.local.php`
+    `cp vendor/spoonx/sxblog/config/sxblog.global.php.dist config/autoload/sxblog.global.php`
 
-    Next up, open the file and change the params to fit your needs.
+    Next up, open the files and change the params to fit your needs.
 
 4. Update the database
 

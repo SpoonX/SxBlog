@@ -6,6 +6,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use SxBlog\Entity\Category as CategoryEntity;
+use SxBlog\Exception;
+use SxBlog\Options\ModuleOptions;
 use SxBlog\Service\CategoryService;
 
 class CategoryController extends AbstractActionController
@@ -22,34 +24,51 @@ class CategoryController extends AbstractActionController
     protected $postRepository;
 
     /**
+     * @var \SxBlog\Options\ModuleOptions
+     */
+    protected $options;
+
+    /**
      * @var \SxBlog\Service\CategoryService
      */
     protected $categoryService;
 
     /**
-     * @var array
-     */
-    protected $messages = array(
-        'category_creation_success' => 'Category created successfully!',
-        'category_creation_fail'    => 'Creating the category failed!',
-        'category_update_success'   => 'Category updated successfully!',
-        'category_update_fail'      => 'Updating the category failed!',
-        'category_deletion_success' => 'Category deleted successfully!',
-    );
-
-    /**
+     * @param \SxBlog\Options\ModuleOptions                 $options
      * @param \Doctrine\Common\Persistence\ObjectRepository $categoryRepository
      * @param \SxBlog\Service\CategoryService               $categoryService
      * @param \Doctrine\Common\Persistence\ObjectRepository $postRepository
      */
     public function __construct(
+        ModuleOptions $options,
         ObjectRepository $categoryRepository,
         CategoryService $categoryService,
         ObjectRepository $postRepository
     ) {
+        $this->options            = $options;
         $this->categoryRepository = $categoryRepository;
         $this->postRepository     = $postRepository;
         $this->categoryService    = $categoryService;
+    }
+
+    /**
+     * @param $key
+     *
+     * @return mixed
+     * @throws \SxBlog\Exception\InvalidArgumentException
+     */
+    protected function getMessage($key)
+    {
+        $messages = $this->options->getMessages();
+
+        if (!isset($messages[$key])) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Invalid $key supplied for getMessage. Message with key "%s" not found.',
+                $key
+            ));
+        }
+
+        return $messages[$key];
     }
 
     /**
@@ -83,13 +102,13 @@ class CategoryController extends AbstractActionController
             if ($form->isValid()) {
                 $this->categoryService->createCategory($categoryEntity);
                 $this->flashMessenger()->setNamespace('sxblog_category')->addMessage(
-                    $this->messages['category_creation_success']
+                    $this->getMessage('category_creation_success')
                 );
 
                 return $this->redirect()->toRoute('sx_blog/categories');
             }
 
-            $message = $this->messages['category_creation_fail'];
+            $message = $this->getMessage('category_creation_fail');
         }
 
         return new ViewModel(array(
@@ -121,14 +140,14 @@ class CategoryController extends AbstractActionController
 
             if ($form->isValid()) {
                 $this->categoryService->saveCategory($categoryEntity);
-                $flashMessenger->addMessage($this->messages['category_update_success']);
+                $flashMessenger->addMessage($this->getMessage('category_update_success'));
 
                 return $this->redirect()->toRoute(
                     'sx_blog/category/edit', array('slug' => $categoryEntity->getSlug())
                 );
             }
 
-            $message = $this->messages['category_update_fail'];
+            $message = $this->getMessage('category_update_fail');
         }
 
         return new ViewModel(array(
@@ -165,11 +184,10 @@ class CategoryController extends AbstractActionController
         $this->categoryService->delete($slug);
 
         $this->flashMessenger()->setNamespace('sxblog_category')->addMessage(
-            $this->messages['category_deletion_success']
+            $this->getMessage('category_deletion_success')
         );
 
-        // @todo: Make configurable.
-        return $this->redirect()->toRoute('sx_blog/categories');
+        return $this->redirect()->toRoute($this->options->getRouteAfterCategoryDelete());
     }
 
     /**
