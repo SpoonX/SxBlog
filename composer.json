@@ -13,7 +13,7 @@
         "zendframework/zendframework": "2.*",
         "doctrine/doctrine-orm-module": "0.*",
         "zf-commons/zfc-user": "0.*",
-        "zf-commons/zfc-user-doctrine-orm": "0.*"
+        "zf-commons/zfc-user-doctrine-orm": "^1.0"
     },
     "autoload": {
         "psr-0": {
